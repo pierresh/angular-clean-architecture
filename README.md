@@ -4,14 +4,14 @@ This project aims to be a skeleton for a clean architecture implemented with Ang
 
 This example shows a management of tickets, each of them having an id and a name.
 
-Tests are done with Jest(https://jestjs.io/) / [Spectator](https://ngneat.github.io/spectator/)
+Tests are done with [Jest](https://jestjs.io/) and [Spectator](https://ngneat.github.io/spectator/)
 
 ## Rationale
-- domain files are gathered in one folder per topic, including:
- - model.ts
- - service.ts
- - state.ts
- - usecase.ts
+- domain files are gathered in one folder per topic in [src/app/domain](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app), including:
+    - model.ts
+    - service.ts
+    - state.ts
+    - usecase.ts
 - the component interacts only with the use case class
 - for the sake of simplicity, the use case class gathers the different use cases for that topic
 - unit tests are performed only through the use cases (as they will use the necessary files to perform the required actions)
