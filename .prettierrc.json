@@ -1,0 +1,13 @@
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"overrides": [
+		{
+			"files": "**/*.html",
+			"options": {
+				"printWidth": 140
+			}
+		}
+	]
+}

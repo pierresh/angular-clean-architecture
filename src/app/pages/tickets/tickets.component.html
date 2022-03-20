@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <h3>List of tickets</h3>
+      <div class="list-group" data-cy="tiles">
+        <a
+          class="list-group-item"
+          *ngFor="let tile of tickets.state.tiles"
+          [routerLink]="['/tickets', tile.id]"
+          routerLinkActive="active"
+        >
+          {{ tile.id }} {{ tile.name }}
+        </a>
+      </div>
+    </div>
+    <div class="col-9">
+      <form autocomplete="off">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="form-label">ID</label>
+            <input
+              readonly
+              class="form-control text-center"
+              name="id"
+              [(ngModel)]="tickets.state.item.id"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Name</label>
+            <input
+              class="form-control"
+              name="name"
+              [(ngModel)]="tickets.state.item.name"
+              #ticket_name
+            />
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="newItem()"
+          data-cy="button-new"
+        >
+          New
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="saveItem()"
+          data-cy="button-save"
+          [disabled]="tickets.state.saving"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteItem()"
+          data-cy="button-delete"
+          [disabled]="tickets.state.deleting || tickets.state.item.id === null"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
