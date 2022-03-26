@@ -18,7 +18,7 @@ export class TicketsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  	// Load the tiles
+    // Load the tiles
     this.tickets.browseItems().then((r) => {
       // If the route id is empty, we set it as the first item in tiles
       const route_id = this.route.snapshot.paramMap.get('id');
