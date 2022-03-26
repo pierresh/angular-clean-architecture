@@ -39,6 +39,6 @@ export class TicketService implements TicketServices {
   }
 
   delete(id: Ticket['id']): Observable<any> {
-    return this.http.delete<any>('api/v1/development/list/' + id);
+    return this.http.delete<any>('api/v1/tickets/' + id);
   }
 }

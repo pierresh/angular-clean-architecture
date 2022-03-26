@@ -75,7 +75,7 @@ export class TicketState {
   /** Add a new entry in the list of tickets, ie. when a ticket is created */
   addTile(): void {
     this.tiles.push({
-      id: this.item.id,
+      id: Number(this.item.id),
       name: this.item.name,
     });
   }

@@ -4,7 +4,7 @@ export interface TicketTile {
 }
 
 export class Ticket {
-  id: number;
+  id: number | null;
   name: string;
 
   constructor(o?: any) {
