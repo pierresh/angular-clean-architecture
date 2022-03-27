@@ -43,24 +43,28 @@ describe('HttpClient testing for TicketService', () => {
     spectator.service.add({ id: null, name: 'my new ticket' }).subscribe();
 
     // Then it should call the API POST api/v1/tickets
-    let req = spectator.expectOne('api/v1/tickets', HttpMethod.POST);
+    const req = spectator.expectOne('api/v1/tickets', HttpMethod.POST);
 
     // And the body should have a data 'name' with the value 'my new ticket'
     expect(req.request.body['name']).toEqual('my new ticket');
+  });
 
+  it('can test HttpClient.put', () => {
     // When I update an existing ticket
     spectator.service.update({ id: 1, name: 'my ticket updated' }).subscribe();
 
     // Then it should call the API api/v1/tickets/1
-    req = spectator.expectOne('api/v1/tickets/1', HttpMethod.PUT);
+    const req = spectator.expectOne('api/v1/tickets/1', HttpMethod.PUT);
 
     // And the body should have a data 'name' with the value 'my ticket updated'
     expect(req.request.body['name']).toEqual('my ticket updated');
+  });
 
+  it('can test HttpClient.delete', () => {
     // When I delete an existing ticket
     spectator.service.delete(1).subscribe();
 
     // Then it should call the API api/v1/tickets/1
-    req = spectator.expectOne('api/v1/tickets/1', HttpMethod.DELETE);
+    spectator.expectOne('api/v1/tickets/1', HttpMethod.DELETE);
   });
 });

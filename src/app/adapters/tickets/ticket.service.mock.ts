@@ -18,6 +18,7 @@ export class TicketService implements TicketServices {
     { id: 1, name: 'First ticket' },
     { id: 2, name: 'Second ticket' },
   ];
+
   fakeId = 2;
 
   browse(options?: any): Observable<any> {
@@ -38,10 +39,7 @@ export class TicketService implements TicketServices {
   }
 
   add(item: Ticket): Observable<any> {
-    // This is for demo only
     this.fakeId = this.fakeId + 1;
-
-    const obj = this.fakeTickets.find((i) => i.id === this.fakeId);
 
     this.fakeTickets.push({
       id: this.fakeId,

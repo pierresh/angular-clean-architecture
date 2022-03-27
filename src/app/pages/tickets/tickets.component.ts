@@ -47,19 +47,19 @@ export class TicketsComponent implements OnInit {
   }
 
   saveItem(): void {
-    this.tickets.saveItem().then((action) => {
-      if (action === 'added') {
+    this.tickets.saveItem().then((r) => {
+      if (r.result === 'added') {
         this.router.navigate(['/tickets', this.tickets.state.item.id]);
       }
     });
   }
 
   deleteItem(): void {
-    this.tickets.deleteItem().then((next_id) => {
-      if (next_id === 0) {
+    this.tickets.deleteItem().then((r) => {
+      if (r.next_id === 0) {
         this.tickets.newItem();
       } else {
-        this.router.navigate(['/tickets', next_id]);
+        this.router.navigate(['/tickets', r.next_id]);
       }
     });
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, finalize } from 'rxjs';
+import { Observable, finalize, switchMap, of } from 'rxjs';
 
 // You can use './ticket.service' if your APis are ready, otherwise use './ticket.service.mock'
 import { TicketService } from '../../adapters/tickets/ticket.service.mock';
@@ -19,11 +19,27 @@ export class TicketState {
   constructor(private service: TicketService) {}
 
   browse(options?: any): Observable<any> {
-    return this.service.browse(options);
+    return this.service.browse(options).pipe(
+      switchMap((r) => {
+        if (r.data.pageIndex === 1) {
+          this.tiles = r.data.items;
+        } else {
+          this.tiles = this.tiles.concat(r.data.items);
+        }
+
+        return of(r);
+      })
+    );
   }
 
   read(id: Ticket['id']): Observable<any> {
-    return this.service.read(id);
+    return this.service.read(id).pipe(
+      switchMap((r) => {
+        this.item = r.data.item;
+
+        return of(r);
+      })
+    );
   }
 
   add(): Observable<any> {
@@ -32,6 +48,12 @@ export class TicketState {
     return this.service.add(this.item).pipe(
       finalize(() => {
         this.saving = false;
+      }),
+      switchMap((r) => {
+        this.item.id = r.data.id;
+        this.addTile();
+
+        return of(r);
       })
     );
   }
@@ -42,6 +64,11 @@ export class TicketState {
     return this.service.update(this.item).pipe(
       finalize(() => {
         this.saving = false;
+      }),
+      switchMap((r) => {
+        this.updateTile();
+
+        return of(r);
       })
     );
   }
@@ -51,6 +78,11 @@ export class TicketState {
     return this.service.delete(this.item.id).pipe(
       finalize(() => {
         this.deleting = false;
+      }),
+      switchMap((r) => {
+        this.deleteTile();
+
+        return of(r);
       })
     );
   }
