@@ -3,7 +3,6 @@ import { mockProvider } from '@ngneat/spectator/jest';
 import { of } from 'rxjs';
 
 import { TicketUsecase } from './ticket.usecase';
-import { TicketService } from './ticket.service';
 
 const serviceMock = {
   item: {},
@@ -32,10 +31,7 @@ const serviceMock = {
 describe('TicketUsecase', () => {
   let spectator: SpectatorService<TicketUsecase>;
 
-  const createService = createServiceFactory({
-    service: TicketUsecase,
-    providers: [mockProvider(TicketService, serviceMock)],
-  });
+  const createService = createServiceFactory(TicketUsecase);
 
   beforeEach(() => (spectator = createService()));
 

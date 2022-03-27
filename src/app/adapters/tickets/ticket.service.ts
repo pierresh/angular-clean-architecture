@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
-import { Ticket } from './ticket.model';
-import { TicketServices } from './ticket.service.interface';
+import { Ticket } from '../../domain/tickets/ticket.model';
+import { TicketServices } from '../../domain/tickets/ticket.port';
 
 /**
  * Service that can be used if APIs are available
