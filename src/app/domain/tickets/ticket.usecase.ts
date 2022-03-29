@@ -44,9 +44,7 @@ export class TicketUsecase {
 
   deleteItem(): Promise<{ next_id: Ticket['id']}> {
     return new Promise((resolve, reject) => {
-      const next_id = this.state.nextTile();
-
-      this.state.delete().subscribe((r) => {
+      this.state.delete().subscribe((next_id) => {
         resolve({ next_id });
       });
     });

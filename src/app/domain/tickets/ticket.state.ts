@@ -74,6 +74,7 @@ export class TicketState {
   }
 
   delete(): Observable<Ticket['id']> {
+  	const next_id = this.nextTile();
     this.deleting = true;
     return this.service.delete(this.item.id).pipe(
       finalize(() => {
@@ -82,7 +83,7 @@ export class TicketState {
       switchMap((r) => {
         this.deleteTile();
 
-        return of(r);
+        return of(next_id);
       })
     );
   }
