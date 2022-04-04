@@ -4,7 +4,7 @@ This project aims to be a neat skeleton for a [clean architecture](https://blog.
 
 This example shows a management of tickets, each of them having an id and a name.
 
-Tests are done with [Jest](https://jestjs.io/) and [Spectator](https://ngneat.github.io/spectator/)
+Tests are done with [Jest](https://jestjs.io/) and [Spectator](https://ngneat.github.io/spectator/), and with [Cypress.io](https://www.cypress.io/).
 
 If you have any suggestions to improve this skeleton, feel free to open an [Issue](https://github.com/pierresh/angular-clean-architecture/issues/new) or a *Pull request* :)
 
@@ -37,4 +37,8 @@ Then `ng serve --open` for a dev server.
 ## Running unit tests
 
 Run `jest` to execute the unit tests
+
+## Running e2e tests
+
+Run `ng e2e` to execute the end-to-end tests
 

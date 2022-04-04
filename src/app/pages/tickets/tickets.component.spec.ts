@@ -18,18 +18,18 @@ describe('TicketComponent', () => {
     expect(spectator.component).toBeTruthy();
 
     /** Test button New **/
-    // Given I have content in development name
+    // Given I have content in ticket name
     spectator.typeInElement('11', 'input[name="name"]');
 
     // When I click on button new
     spectator.click('button[data-cy="button-new"]');
 
-    // Then the development name should be empty
+    // Then the ticket name should be empty
     expect(spectator.component.tickets.state.item.name).toEqual('');
     expect('input[name="name"]').toHaveValue('');
 
     /** Test button Save - Create **/
-    // Given I have content in development name
+    // Given I have content in ticket name
     spectator.typeInElement('New ticket', 'input[name="name"]');
 
     // When I click on save

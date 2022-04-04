@@ -89,7 +89,7 @@ describe('TicketUsecase', () => {
     // When I delete the current ticket
     usecase.deleteItem().then((r) => {
       // Then the next ticket_id should be equal to 2
-      expect(r).toEqual(2);
+      expect(r.next_id).toEqual(2);
     });
 
     // And the list of tiles should be empty
