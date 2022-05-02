@@ -70,7 +70,7 @@ export class TicketState {
   }
 
   delete(): Observable<Ticket['id']> {
-  	const next_id = this.nextTile();
+    const next_id = this.nextTile();
     this.deleting = true;
     return this.service.delete(this.item.id).pipe(
       finalize(() => {

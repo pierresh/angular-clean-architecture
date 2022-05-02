@@ -12,12 +12,7 @@ import { TicketsComponent } from './pages/tickets/tickets.component';
 
 @NgModule({
   declarations: [AppComponent, TicketsComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    AppRoutingModule,
-  ],
+  imports: [BrowserModule, HttpClientModule, FormsModule, AppRoutingModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

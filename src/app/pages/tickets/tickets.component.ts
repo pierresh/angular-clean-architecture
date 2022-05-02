@@ -11,6 +11,9 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 export class TicketsComponent implements OnInit {
   @ViewChild('ticket_name') ticket_name!: ElementRef;
 
+  /** Shortcut to simplify access to the state */
+  state = this.tickets.state;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

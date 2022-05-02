@@ -24,7 +24,7 @@ export class TicketUsecase {
     this.state.item = new Ticket();
   }
 
-  saveItem(): Promise<{ result: 'added' | 'updated'}> {
+  saveItem(): Promise<{ result: 'added' | 'updated' }> {
     return new Promise((resolve, reject) => {
       if (this.state.item.id === null) {
         this.state.add().subscribe((r) => {
@@ -38,7 +38,7 @@ export class TicketUsecase {
     });
   }
 
-  deleteItem(): Promise<{ next_id: Ticket['id']}> {
+  deleteItem(): Promise<{ next_id: Ticket['id'] }> {
     return new Promise((resolve, reject) => {
       this.state.delete().subscribe((next_id) => {
         resolve({ next_id });

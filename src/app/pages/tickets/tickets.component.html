@@ -5,7 +5,7 @@
       <div class="list-group" data-cy="tiles">
         <a
           class="list-group-item"
-          *ngFor="let tile of tickets.state.tiles"
+          *ngFor="let tile of state.tiles"
           [routerLink]="['/tickets', tile.id]"
           routerLinkActive="active"
         >
@@ -22,7 +22,7 @@
               readonly
               class="form-control text-center"
               name="id"
-              [(ngModel)]="tickets.state.item.id"
+              [(ngModel)]="state.item.id"
             />
           </div>
           <div class="col-md-4">
@@ -30,7 +30,7 @@
             <input
               class="form-control"
               name="name"
-              [(ngModel)]="tickets.state.item.name"
+              [(ngModel)]="state.item.name"
               #ticket_name
             />
           </div>
@@ -48,7 +48,7 @@
           class="btn btn-primary"
           (click)="saveItem()"
           data-cy="button-save"
-          [disabled]="tickets.state.saving"
+          [disabled]="state.saving"
         >
           Save
         </button>
@@ -57,7 +57,7 @@
           class="btn btn-danger"
           (click)="deleteItem()"
           data-cy="button-delete"
-          [disabled]="tickets.state.deleting || tickets.state.item.id === null"
+          [disabled]="state.deleting || state.item.id === null"
         >
           Delete
         </button>

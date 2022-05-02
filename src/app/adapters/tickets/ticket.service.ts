@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Ticket } from '../../domain/tickets/ticket.model';
-import { TicketServices } from '../../domain/tickets/ticket.port';
+import { TicketPorts } from '../../domain/tickets/ticket.port';
 
 /**
  * Service that can be used if APIs are available
@@ -12,7 +12,7 @@ import { TicketServices } from '../../domain/tickets/ticket.port';
 @Injectable({
   providedIn: 'root',
 })
-export class TicketService implements TicketServices {
+export class TicketService implements TicketPorts {
   constructor(private http: HttpClient) {}
 
   browse(options?: any): Observable<any> {

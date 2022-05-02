@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 import { Ticket } from './ticket.model';
 
-export interface TicketServices<> {
+export interface TicketPorts<> {
   browse(options?: any): Observable<any>;
 
   read(id: Ticket['id']): Observable<any>;

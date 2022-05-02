@@ -17,7 +17,7 @@ If you have any suggestions to improve this skeleton, feel free to open an [Issu
 ![examples](src/assets/tickets.png)
 
 ## Rationale
-- domain files are gathered in one folder per topic in [src/app/domain](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app), including:
+- domain files are agnostic (does not depend on anything except rxjs) and gathered in one folder per topic in [src/app/domain](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app), including:
     - model.ts
     - usecase.ts
     - state.ts
@@ -36,7 +36,7 @@ Then `ng serve --open` for a dev server.
 
 ## Running unit tests
 
-Run `jest` to execute the unit tests
+Run `jest src/*` to execute the unit tests
 
 ## Running e2e tests
 
