@@ -1,5 +1,8 @@
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
 import { TicketsComponent } from './tickets.component';
+import { TicketService } from '../../adapters/tickets/ticket.service.mock';
+import { TicketState } from '../../domain/tickets/ticket.state';
+import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 
 import { FormsModule } from '@angular/forms';
 
@@ -10,6 +13,18 @@ describe('TicketComponent', () => {
     detectChanges: false,
     component: TicketsComponent,
     imports: [FormsModule],
+    providers: [
+      {
+        provide: TicketState,
+        deps: [TicketService],
+        useFactory: (service: TicketService) => new TicketState(service),
+      },
+      {
+        provide: TicketUsecase,
+        deps: [TicketState],
+        useFactory: (state: TicketState) => new TicketUsecase(state),
+      },
+    ],
   });
 
   beforeEach(() => (spectator = createComponent()));

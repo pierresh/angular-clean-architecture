@@ -1,13 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Observable, finalize, switchMap, of } from 'rxjs';
 
 // You can use './ticket.service' if your APis are ready, otherwise use './ticket.service.mock'
 import { TicketService } from '../../adapters/tickets/ticket.service.mock';
 import { Ticket, TicketTile } from './ticket.model';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class TicketState {
   item = new Ticket();
   tiles: TicketTile[] = [];

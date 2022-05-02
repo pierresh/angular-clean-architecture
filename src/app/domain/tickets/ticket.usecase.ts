@@ -1,10 +1,6 @@
-import { Injectable } from '@angular/core';
 import { TicketState } from './ticket.state';
 import { Ticket } from './ticket.model';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class TicketUsecase {
   constructor(public state: TicketState) {}
 

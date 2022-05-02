@@ -1,12 +1,12 @@
-import { createServiceFactory, SpectatorService } from '@ngneat/spectator';
-import { mockProvider } from '@ngneat/spectator/jest';
 import { of } from 'rxjs';
 
 import { TicketUsecase } from './ticket.usecase';
+import { TicketState } from './ticket.state';
+import { TicketService } from '../../adapters/tickets/ticket.service.mock';
 
+// If there is no .service.mock available, it is possible to mock as follow
+// I keep the 2 way to mock the service for record
 const serviceMock = {
-  item: {},
-  tiles: [],
   browse: () =>
     of({
       data: {
@@ -29,15 +29,11 @@ const serviceMock = {
 };
 
 describe('TicketUsecase', () => {
-  let spectator: SpectatorService<TicketUsecase>;
-
-  const createService = createServiceFactory(TicketUsecase);
-
-  beforeEach(() => (spectator = createService()));
-
   it('should be created', () => {
-    expect(spectator.service).toBeTruthy();
-    const usecase = spectator.service;
+    // const service = serviceMock;
+    const service = new TicketService();
+    const state = new TicketState(service);
+    const usecase = new TicketUsecase(state);
 
     // When I browse ths list of tickets
     usecase.browseItems();
