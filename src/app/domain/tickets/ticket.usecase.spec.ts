@@ -29,25 +29,29 @@ const serviceMock = {
 };
 
 describe('TicketUsecase', () => {
-  it('should be created', () => {
-    // const service = serviceMock;
-    const service = new TicketService();
-    const state = new TicketState(service);
-    const usecase = new TicketUsecase(state);
+  // const service = serviceMock;
+  const service = new TicketService();
+  const state = new TicketState(service);
+  const usecase = new TicketUsecase(state);
 
+  it('should browseItems', () => {
     // When I browse ths list of tickets
     usecase.browseItems();
 
     // Then I should have 2 tickets
     expect(usecase.state.tiles.length).toEqual(2);
+  });
 
+  it('should open the first item', () => {
     // When I open the first tile
     usecase.openItem(1);
 
     // Then the ticket name should be equal to 'First ticket'
     expect(usecase.state.item.name).toEqual('First ticket');
+  });
 
-    // Given I set the ticket name
+  it('should clean when call newItem', () => {
+    // Given I set the ticket name;
     usecase.state.item.name = 'Hello';
 
     // When I call newItem()
@@ -55,8 +59,11 @@ describe('TicketUsecase', () => {
 
     // Then the ticket name shoud be empty
     expect(usecase.state.item.name).toEqual('');
+  });
 
-    // Given I write a ticket name
+  it('should add a tile when save an item', () => {
+    // Given I write a ticket name with an id equal to null
+    usecase.state.item.id = null;
     usecase.state.item.name = 'Hello';
 
     // When I call saveItem()
@@ -64,8 +71,11 @@ describe('TicketUsecase', () => {
 
     // Then it adds the ticket in the list
     expect(usecase.state.tiles.length).toEqual(3);
+  });
 
-    // Given I update the ticket name
+  it('should update a tile when save an item with an id', () => {
+    // Given I update the ticket name with an ID equals to 3
+    usecase.state.item.id = 3;
     usecase.state.item.name = 'Hello2';
 
     // When I call saveItem()
@@ -81,14 +91,16 @@ describe('TicketUsecase', () => {
     if (obj) {
       expect(obj.name).toEqual('Hello2');
     }
+  });
 
+  it('should delete a tile when delete an item', () => {
     // When I delete the current ticket
     usecase.deleteItem().then((r) => {
       // Then the next ticket_id should be equal to 2
       expect(r.next_id).toEqual(2);
     });
 
-    // And the list of tiles should be empty
+    // And the list of tiles should be equal to 2
     expect(usecase.state.tiles.length).toEqual(2);
   });
 });

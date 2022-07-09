@@ -5,7 +5,7 @@
       <div class="list-group" data-cy="tiles">
         <a
           class="list-group-item"
-          *ngFor="let tile of state.tiles"
+          *ngFor="let tile of usecase.getTiles() | async"
           [routerLink]="['/tickets', tile.id]"
           routerLinkActive="active"
         >

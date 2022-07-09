@@ -1,8 +1,13 @@
 import { TicketState } from './ticket.state';
-import { Ticket } from './ticket.model';
+import { Ticket, TicketTile } from './ticket.model';
+import { Observable, of } from 'rxjs';
 
 export class TicketUsecase {
   constructor(public state: TicketState) {}
+
+  getTiles(): Observable<TicketTile[]> {
+    return of(this.state.tiles);
+  }
 
   browseItems(options?: any): Promise<object> {
     return new Promise((resolve, reject) => {
@@ -21,18 +26,18 @@ export class TicketUsecase {
   }
 
   newItem(): void {
-    this.state.item = new Ticket();
+    this.state.clean();
   }
 
-  saveItem(): Promise<{ result: 'added' | 'updated' }> {
+  saveItem(): Promise<{ result: 'added' | 'updated'; id: Ticket['id'] }> {
     return new Promise((resolve, reject) => {
       if (this.state.item.id === null) {
         this.state.add().subscribe((r) => {
-          resolve({ result: 'added' });
+          resolve({ result: 'added', id: this.state.item.id });
         });
       } else {
         this.state.update().subscribe((r) => {
-          resolve({ result: 'updated' });
+          resolve({ result: 'updated', id: this.state.item.id });
         });
       }
     });

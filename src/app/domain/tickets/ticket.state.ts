@@ -38,6 +38,10 @@ export class TicketState {
     );
   }
 
+  clean(): void {
+    this.item = new Ticket();
+  }
+
   add(): Observable<any> {
     this.saving = true;
 
