@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', redirectTo: '.' },
+      { path: '', redirectTo: '.', pathMatch: 'prefix' },
       { path: ':id', component: TicketsComponent },
     ],
   },

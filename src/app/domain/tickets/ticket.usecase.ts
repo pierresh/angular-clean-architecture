@@ -3,11 +3,7 @@ import { Ticket, TicketTile } from './ticket.model';
 import { Observable, of } from 'rxjs';
 
 export class TicketUsecase {
-  constructor(public state: TicketState) {}
-
-  getTiles(): Observable<TicketTile[]> {
-    return of(this.state.tiles);
-  }
+  constructor(private state: TicketState) {}
 
   browseItems(options?: any): Promise<object> {
     return new Promise((resolve, reject) => {
@@ -30,17 +26,7 @@ export class TicketUsecase {
   }
 
   saveItem(): Promise<{ result: 'added' | 'updated'; id: Ticket['id'] }> {
-    return new Promise((resolve, reject) => {
-      if (this.state.item.id === null) {
-        this.state.add().subscribe((r) => {
-          resolve({ result: 'added', id: this.state.item.id });
-        });
-      } else {
-        this.state.update().subscribe((r) => {
-          resolve({ result: 'updated', id: this.state.item.id });
-        });
-      }
-    });
+    return this.state.saveItem();
   }
 
   deleteItem(): Promise<{ next_id: Ticket['id'] }> {

@@ -9,6 +9,7 @@ import { TicketsRoutingModule } from './tickets-routing.module';
 
 import { TicketService } from '../../adapters/tickets/ticket.service.mock';
 import { TicketState } from '../../domain/tickets/ticket.state';
+import { TicketStore } from '../../domain/tickets/ticket.store';
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 
 @NgModule({
@@ -16,9 +17,14 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
   imports: [CommonModule, TicketsRoutingModule],
   providers: [
     {
+      provide: TicketStore,
+      useFactory: () => new TicketStore(),
+    },
+    {
       provide: TicketState,
-      deps: [TicketService],
-      useFactory: (service: TicketService) => new TicketState(service),
+      deps: [TicketService, TicketStore],
+      useFactory: (service: TicketService, store: TicketStore) =>
+        new TicketState(service, store),
     },
     {
       provide: TicketUsecase,

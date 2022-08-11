@@ -17,10 +17,11 @@ If you have any suggestions to improve this skeleton, feel free to open an [Issu
 ![examples](src/assets/tickets.png)
 
 ## Rationale
-- domain files are agnostic (does not depend on anything except rxjs) and gathered in one folder per topic in [src/app/domain](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app), including:
+- domain files are agnostic (they do not depend on anything except rxjs) and gathered in one folder per topic in [src/app/domain](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app), including:
     - model.ts
-    - usecase.ts
-    - state.ts
+    - usecase.ts (where the intents of the system are located)
+    - state.ts (where the main business logic is located)
+    - store.ts (where the data is located)
     - port.ts (just an interface for the services)
 - the component interacts only with the use case class
 - for the sake of simplicity, the use case class gathers the different use cases for that topic

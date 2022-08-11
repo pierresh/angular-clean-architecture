@@ -2,6 +2,7 @@ import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
 import { TicketsComponent } from './tickets.component';
 import { TicketService } from '../../adapters/tickets/ticket.service.mock';
 import { TicketState } from '../../domain/tickets/ticket.state';
+import { TicketStore } from '../../domain/tickets/ticket.store';
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 
 import { FormsModule } from '@angular/forms';
@@ -15,9 +16,14 @@ describe('TicketComponent', () => {
     imports: [FormsModule],
     providers: [
       {
+        provide: TicketStore,
+        useFactory: () => new TicketStore(),
+      },
+      {
         provide: TicketState,
-        deps: [TicketService],
-        useFactory: (service: TicketService) => new TicketState(service),
+        deps: [TicketService, TicketStore],
+        useFactory: (service: TicketService, store: TicketStore) =>
+          new TicketState(service, store),
       },
       {
         provide: TicketUsecase,
@@ -40,7 +46,7 @@ describe('TicketComponent', () => {
     spectator.click('button[data-cy="button-new"]');
 
     // Then the ticket name should be empty
-    expect(spectator.component.tickets.state.item.name).toEqual('');
+    expect(spectator.component.store.item.name).toEqual('');
     expect('input[name="name"]').toHaveValue('');
 
     /** Test button Save - Create **/

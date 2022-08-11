@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
+import { TicketStore } from '../../domain/tickets/ticket.store';
 
 @Component({
   selector: 'app-ticket',
@@ -11,13 +12,11 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 export class TicketsComponent implements OnInit {
   @ViewChild('ticket_name') ticket_name!: ElementRef;
 
-  /** Shortcut to simplify access to the state */
-  state = this.usecase.state;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public usecase: TicketUsecase
+    private usecase: TicketUsecase,
+    public store: TicketStore
   ) {}
 
   ngOnInit(): void {
@@ -26,7 +25,7 @@ export class TicketsComponent implements OnInit {
       // If the route id is empty, we set it as the first item in tiles
       const route_id = this.route.snapshot.paramMap.get('id');
       if (route_id === null || route_id === '.') {
-        this.router.navigate(['/tickets', this.usecase.state.tiles[0].id]);
+        this.router.navigate(['/tickets', this.store.tiles[0].id]);
       }
 
       // Listen the change of the route to load the related ticket
