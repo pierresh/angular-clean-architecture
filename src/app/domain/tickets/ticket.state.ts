@@ -1,4 +1,4 @@
-import { Observable, finalize, switchMap, of } from 'rxjs';
+import { Observable, finalize, switchMap, of, firstValueFrom } from 'rxjs';
 
 // You can use './ticket.service' if your APis are ready, otherwise use './ticket.service.mock'
 import { TicketService } from '../../adapters/tickets/ticket.service.mock';
@@ -7,7 +7,7 @@ import { TicketStore, Ticket, TicketTile } from './ticket.store';
 export class TicketState {
   constructor(private service: TicketService, private store: TicketStore) {}
 
-  browse(options?: any): Observable<any> {
+  browse(options?: any): Observable<{ result: boolean }> {
     return this.service.browse(options).pipe(
       switchMap((r) => {
         if (r.data.pageIndex === 1) {
@@ -16,17 +16,17 @@ export class TicketState {
           this.store.tiles = this.store.tiles.concat(r.data.items);
         }
 
-        return of(r);
+        return of({ result: true });
       })
     );
   }
 
-  read(id: Ticket['id']): Observable<any> {
+  read(id: Ticket['id']): Observable<{ result: boolean }> {
     return this.service.read(id).pipe(
       switchMap((r) => {
         this.store.item = r.data.item;
 
-        return of(r);
+        return of({ result: true });
       })
     );
   }
@@ -36,17 +36,27 @@ export class TicketState {
   }
 
   saveItem(): Promise<{ result: 'added' | 'updated'; id: Ticket['id'] }> {
-    return new Promise((resolve, reject) => {
-      if (this.store.item.id === null) {
-        this.add().subscribe((r) => {
-          resolve({ result: 'added', id: this.store.item.id });
-        });
-      } else {
-        this.update().subscribe((r) => {
-          resolve({ result: 'updated', id: this.store.item.id });
-        });
-      }
-    });
+    if (this.store.item.id === null) {
+      return firstValueFrom(
+        this.add().pipe(
+          switchMap((r) => {
+            const result: 'added' = 'added';
+
+            return of({ result, id: this.store.item.id });
+          })
+        )
+      );
+    } else {
+      return firstValueFrom(
+        this.update().pipe(
+          switchMap((r) => {
+            const result: 'updated' = 'updated';
+
+            return of({ result, id: this.store.item.id });
+          })
+        )
+      );
+    }
   }
 
   add(): Observable<any> {
@@ -80,9 +90,11 @@ export class TicketState {
     );
   }
 
-  delete(): Observable<Ticket['id']> {
+  delete(): Observable<{ next_id: Ticket['id'] }> {
     const next_id = this.nextTile();
+
     this.store.deleting = true;
+
     return this.service.delete(this.store.item.id).pipe(
       finalize(() => {
         this.store.deleting = false;
@@ -90,7 +102,7 @@ export class TicketState {
       switchMap((r) => {
         this.deleteTile();
 
-        return of(next_id);
+        return of({ next_id });
       })
     );
   }
