@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { Ticket } from '../../domain/tickets/ticket.model';
+import {
+  JsonBrowse,
+  JsonRead,
+  JsonAdd,
+  JsonUpdate,
+  JsonDelete,
+} from '../response.model';
+
+import { Ticket, TicketTile } from '../../domain/tickets/ticket.model';
 import { TicketPorts } from '../../domain/tickets/ticket.port';
 
 /**
@@ -11,17 +19,17 @@ import { TicketPorts } from '../../domain/tickets/ticket.port';
 @Injectable({
   providedIn: 'root',
 })
-export class TicketService implements TicketPorts {
+export class TicketAdapter implements TicketPorts {
   constructor() {}
 
-  fakeTickets: Ticket[] = [
+  fakeTickets: TicketTile[] = [
     { id: 1, name: 'First ticket' },
     { id: 2, name: 'Second ticket' },
   ];
 
   fakeId = 2;
 
-  browse(options?: any): Observable<any> {
+  browse(options?: any): Observable<JsonBrowse> {
     const copies = Object.assign([], this.fakeTickets); // Prevent data binding
     return of({
       data: {
@@ -31,14 +39,14 @@ export class TicketService implements TicketPorts {
     });
   }
 
-  read(id: Ticket['id']): Observable<any> {
+  read(id: Ticket['id']): Observable<JsonRead> {
     const item = this.fakeTickets.find((i) => i.id === id);
     const copy = Object.assign({}, item); // Prevent data binding
 
     return of({ data: { item: copy } });
   }
 
-  add(item: Ticket): Observable<any> {
+  add(item: Ticket): Observable<JsonAdd> {
     this.fakeId = this.fakeId + 1;
 
     this.fakeTickets.push({
@@ -48,11 +56,11 @@ export class TicketService implements TicketPorts {
     return of({ data: { id: this.fakeId } });
   }
 
-  update(item: Ticket): Observable<any> {
+  update(item: Ticket): Observable<JsonUpdate> {
     return of({ data: { rowCount: 1 } });
   }
 
-  delete(id: Ticket['id']): Observable<any> {
+  delete(id: Ticket['id']): Observable<JsonDelete> {
     return of({ data: { rowCount: 1 } });
   }
 }

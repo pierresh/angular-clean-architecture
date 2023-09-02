@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Dependency if use the real service requiring http
-// If so, HttpClient should be add in the factory of TicketService
+// If so, HttpClient should be add in the factory of TicketAdapter
 import { HttpClient } from '@angular/common/http';
 
 import { TicketsRoutingModule } from './tickets-routing.module';
 
-import { TicketService } from '../../adapters/tickets/ticket.service.mock';
+import { TicketAdapter } from '../../adapters/tickets/ticket.adapter';
 import { TicketState } from '../../domain/tickets/ticket.state';
 import { TicketStore } from '../../domain/tickets/ticket.store';
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
@@ -22,9 +22,9 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
     },
     {
       provide: TicketState,
-      deps: [TicketService, TicketStore],
-      useFactory: (service: TicketService, store: TicketStore) =>
-        new TicketState(service, store),
+      deps: [TicketAdapter, TicketStore],
+      useFactory: (adapter: TicketAdapter, store: TicketStore) =>
+        new TicketState(adapter, store),
     },
     {
       provide: TicketUsecase,

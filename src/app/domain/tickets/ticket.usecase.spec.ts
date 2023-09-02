@@ -44,8 +44,19 @@ describe('TicketUsecase', () => {
     expect(store.tiles.length).toEqual(2);
   });
 
+  it('should add tiles when browse the second page', () => {
+    // Given I have one tile
+    store.tiles = [{ id: 10, name: 'Thenth' }];
+
+    // When I browse the second page
+    usecase.browseItems({ pageIndex: 2 });
+
+    // Then I have two tiles more
+    expect(store.tiles.length).toEqual(2);
+  });
+
   it('should open the first item', () => {
-    // When I open the first tile
+    // When I open the first ticket
     usecase.openItem(1);
 
     // Then the ticket name should be equal to 'First ticket'
@@ -63,7 +74,7 @@ describe('TicketUsecase', () => {
     expect(store.item.name).toEqual('');
   });
 
-  it('should add a tile when save an item', () => {
+  it('should add a ticket when save an item', () => {
     // Given I write a ticket name with an id equal to null
     store.item.id = null;
     store.item.name = 'Hello';
@@ -75,7 +86,7 @@ describe('TicketUsecase', () => {
     expect(store.tiles.length).toEqual(3);
   });
 
-  it('should update a tile when save an item with an id', () => {
+  it('should update a ticket when save an item with an id', () => {
     // Given I update the ticket name with an ID equals to 3
     store.item.id = 3;
     store.item.name = 'Hello2';
@@ -83,10 +94,10 @@ describe('TicketUsecase', () => {
     // When I call saveItem()
     usecase.saveItem();
 
-    // Then it should still have one tile in the list of tiles
+    // Then it should still have one ticket in the list of tickets
     expect(store.tiles.length).toEqual(3);
 
-    // And it should update the name of the tile
+    // And it should update the name of the ticket
     const obj = store.tiles.find((i) => i.id === 3);
     // expect(obj).toBeDefined();
 
@@ -95,14 +106,73 @@ describe('TicketUsecase', () => {
     }
   });
 
-  it('should delete a tile when delete an item', () => {
-    // When I delete the current ticket
+  it('should return the following ticket when delete current record', () => {
+    // Given I have an item and one ticket
+    store.item.id = 1;
+    store.item.name = 'First';
+    store.tiles = [
+      {
+        id: 1,
+        name: 'First',
+      },
+      {
+        id: 2,
+        name: 'Second',
+      },
+      {
+        id: 3,
+        name: 'Third',
+      },
+    ];
+
+    // When I delete the current item
     usecase.deleteItem().then((r) => {
-      // Then the next ticket_id should be equal to 2
+      // Then the next_id should be equal to '002'
       expect(r.next_id).toEqual(2);
     });
+  });
 
-    // And the list of tiles should be equal to 2
-    expect(store.tiles.length).toEqual(2);
+  it('should return the new last ticket when deleting the last ticket of the list', () => {
+    // Given I have an item and one ticket
+    store.item.id = 3;
+    store.item.name = 'First';
+    store.tiles = [
+      {
+        id: 1,
+        name: 'First',
+      },
+      {
+        id: 2,
+        name: 'Second',
+      },
+      {
+        id: 3,
+        name: 'Third',
+      },
+    ];
+
+    // When I delete the current item
+    usecase.deleteItem().then((r) => {
+      // Then the next_id should be equal to '002'
+      expect(r.next_id).toEqual(2);
+    });
+  });
+
+  it('should return 0 when delete the last remaining ticket', async () => {
+    // Given I have an item and one ticket
+    store.item.id = 1;
+    store.item.name = 'First';
+    store.tiles = [
+      {
+        id: 1,
+        name: 'First',
+      },
+    ];
+
+    // When I delete the current item
+    await usecase.deleteItem().then((r) => {
+      // Then the next_id should be equal to '002'
+      expect(r.next_id).toEqual(0);
+    });
   });
 });

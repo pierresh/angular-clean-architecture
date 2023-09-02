@@ -6,7 +6,7 @@ import { Ticket, TicketTile } from './ticket.model';
 export class TicketUsecase {
   constructor(private state: TicketState) {}
 
-  browseItems(options?: any): Promise<{ result: boolean }> {
+  browseItems(options?: object): Promise<{ result: boolean }> {
     return firstValueFrom(this.state.browse(options));
   }
 

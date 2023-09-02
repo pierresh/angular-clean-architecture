@@ -9,6 +9,4 @@ export class TicketStore {
   // States for buttons
   saving = false;
   deleting = false;
-
-  constructor() {}
 }

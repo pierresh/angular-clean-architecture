@@ -1,14 +1,13 @@
 import { Observable, finalize, switchMap, of, firstValueFrom } from 'rxjs';
 
-// You can use './ticket.service' if your APis are ready, otherwise use './ticket.service.mock'
-import { TicketService } from '../../adapters/tickets/ticket.service.mock';
+import { TicketPorts } from './ticket.port';
 import { TicketStore, Ticket, TicketTile } from './ticket.store';
 
 export class TicketState {
-  constructor(private service: TicketService, private store: TicketStore) {}
+  constructor(private adapter: TicketPorts, private store: TicketStore) {}
 
-  browse(options?: any): Observable<{ result: boolean }> {
-    return this.service.browse(options).pipe(
+  browse(options?: object): Observable<{ result: boolean }> {
+    return this.adapter.browse(options).pipe(
       switchMap((r) => {
         if (r.data.pageIndex === 1) {
           this.store.tiles = r.data.items;
@@ -22,7 +21,7 @@ export class TicketState {
   }
 
   read(id: Ticket['id']): Observable<{ result: boolean }> {
-    return this.service.read(id).pipe(
+    return this.adapter.read(id).pipe(
       switchMap((r) => {
         this.store.item = r.data.item;
 
@@ -62,7 +61,7 @@ export class TicketState {
   add(): Observable<any> {
     this.store.saving = true;
 
-    return this.service.add(this.store.item).pipe(
+    return this.adapter.add(this.store.item).pipe(
       finalize(() => {
         this.store.saving = false;
       }),
@@ -78,7 +77,7 @@ export class TicketState {
   update(): Observable<any> {
     this.store.saving = true;
 
-    return this.service.update(this.store.item).pipe(
+    return this.adapter.update(this.store.item).pipe(
       finalize(() => {
         this.store.saving = false;
       }),
@@ -95,7 +94,7 @@ export class TicketState {
 
     this.store.deleting = true;
 
-    return this.service.delete(this.store.item.id).pipe(
+    return this.adapter.delete(this.store.item.id).pipe(
       finalize(() => {
         this.store.deleting = false;
       }),
