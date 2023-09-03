@@ -1,11 +1,12 @@
 import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
+
+import { FormsModule } from '@angular/forms';
+
 import { TicketsComponent } from './tickets.component';
-import { TicketService } from '../../adapters/tickets/ticket.service.mock';
+import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
 import { TicketState } from '../../domain/tickets/ticket.state';
 import { TicketStore } from '../../domain/tickets/ticket.store';
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
-
-import { FormsModule } from '@angular/forms';
 
 describe('TicketComponent', () => {
   let spectator: Spectator<TicketsComponent>;
@@ -21,9 +22,9 @@ describe('TicketComponent', () => {
       },
       {
         provide: TicketState,
-        deps: [TicketService, TicketStore],
-        useFactory: (service: TicketService, store: TicketStore) =>
-          new TicketState(service, store),
+        deps: [TicketAdapterMock, TicketStore],
+        useFactory: (adapter: TicketAdapterMock, store: TicketStore) =>
+          new TicketState(adapter, store),
       },
       {
         provide: TicketUsecase,

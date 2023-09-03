@@ -3,11 +3,11 @@ import { of } from 'rxjs';
 import { TicketUsecase } from './ticket.usecase';
 import { TicketState } from './ticket.state';
 import { TicketStore } from './ticket.store';
-import { TicketService } from '../../adapters/tickets/ticket.service.mock';
+import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
 
-// If there is no .service.mock available, it is possible to mock as follow
-// I keep the 2 way to mock the service for record
-const serviceMock = {
+// If there is no .adapter.mock available, it is possible to mock as follow
+// I keep the 2 way to mock the adapter for record
+const adapterMock = {
   browse: () =>
     of({
       data: {
@@ -30,10 +30,10 @@ const serviceMock = {
 };
 
 describe('TicketUsecase', () => {
-  // const service = serviceMock;
-  const service = new TicketService();
+  // const adapterMock = adapterMock;
+  const adapterMock = new TicketAdapterMock();
   const store = new TicketStore();
-  const state = new TicketState(service, store);
+  const state = new TicketState(adapterMock, store);
   const usecase = new TicketUsecase(state);
 
   it('should browseItems', () => {
