@@ -8,6 +8,7 @@ import { TicketStore } from '../../domain/tickets/ticket.store';
   selector: 'app-ticket',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
+  standalone: false,
 })
 export class TicketsComponent implements OnInit {
   @ViewChild('ticket_name') ticket_name!: ElementRef;
