@@ -25,7 +25,7 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
       useFactory: (
         adapter: TicketAdapter,
         adapterMock: TicketAdapterMock,
-        store: TicketStore
+        store: TicketStore,
       ): TicketState => {
         if (environment.api_source === 'rest') {
           return new TicketState(adapter, store);

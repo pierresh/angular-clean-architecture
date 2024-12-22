@@ -1,14 +1,21 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute,
+  ParamMap,
+  RouterLinkActive,
+  RouterLink,
+} from '@angular/router';
 
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 import { TicketStore } from '../../domain/tickets/ticket.store';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-ticket',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
-  standalone: false,
+  imports: [RouterLinkActive, RouterLink, FormsModule],
 })
 export class TicketsComponent implements OnInit {
   @ViewChild('ticket_name') ticket_name!: ElementRef;
@@ -17,7 +24,7 @@ export class TicketsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private usecase: TicketUsecase,
-    public store: TicketStore
+    public store: TicketStore,
   ) {}
 
   ngOnInit(): void {

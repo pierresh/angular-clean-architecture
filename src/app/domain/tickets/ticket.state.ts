@@ -4,7 +4,10 @@ import { TicketPorts } from './ticket.port';
 import { TicketStore, Ticket, TicketTile } from './ticket.store';
 
 export class TicketState {
-  constructor(private adapter: TicketPorts, private store: TicketStore) {}
+  constructor(
+    private adapter: TicketPorts,
+    private store: TicketStore,
+  ) {}
 
   browse(options?: object): Observable<{ result: boolean }> {
     return this.adapter.browse(options).pipe(
@@ -16,7 +19,7 @@ export class TicketState {
         }
 
         return of({ result: true });
-      })
+      }),
     );
   }
 
@@ -26,7 +29,7 @@ export class TicketState {
         this.store.item = r.data.item;
 
         return of({ result: true });
-      })
+      }),
     );
   }
 
@@ -42,8 +45,8 @@ export class TicketState {
             const result: 'added' = 'added';
 
             return of({ result, id: this.store.item.id });
-          })
-        )
+          }),
+        ),
       );
     } else {
       return firstValueFrom(
@@ -52,8 +55,8 @@ export class TicketState {
             const result: 'updated' = 'updated';
 
             return of({ result, id: this.store.item.id });
-          })
-        )
+          }),
+        ),
       );
     }
   }
@@ -70,7 +73,7 @@ export class TicketState {
         this.addTile();
 
         return of(r);
-      })
+      }),
     );
   }
 
@@ -85,7 +88,7 @@ export class TicketState {
         this.updateTile();
 
         return of(r);
-      })
+      }),
     );
   }
 
@@ -102,14 +105,14 @@ export class TicketState {
         this.deleteTile();
 
         return of({ next_id });
-      })
+      }),
     );
   }
 
   /** Determine which ticket should be displayed after we delete the current one */
   nextTile(): Ticket['id'] {
     const itemIndex = this.store.tiles.findIndex(
-      (item) => item.id === this.store.item.id
+      (item) => item.id === this.store.item.id,
     );
 
     // If the item is the last one, we should use the previous one
@@ -136,7 +139,7 @@ export class TicketState {
   /** Update the entry in the list of tickets, ie. when a ticket is updated */
   updateTile(): void {
     const itemIndex = this.store.tiles.findIndex(
-      (item) => item.id === this.store.item.id
+      (item) => item.id === this.store.item.id,
     );
 
     if (itemIndex !== -1) {
@@ -147,7 +150,7 @@ export class TicketState {
   /** Remove the tile of the deleted ticket */
   deleteTile(): void {
     this.store.tiles = this.store.tiles.filter(
-      (i) => i.id !== this.store.item.id
+      (i) => i.id !== this.store.item.id,
     );
   }
 }

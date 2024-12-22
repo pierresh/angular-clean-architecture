@@ -3,14 +3,15 @@
     <div class="col-3">
       <h3>List of tickets</h3>
       <div class="list-group" data-cy="tiles">
-        <a
-          class="list-group-item"
-          *ngFor="let tile of store.tiles"
-          [routerLink]="['/tickets', tile.id]"
-          routerLinkActive="active"
-        >
-          {{ tile.id }} {{ tile.name }}
-        </a>
+        @for (tile of store.tiles; track tile) {
+          <a
+            class="list-group-item"
+            [routerLink]="['/tickets', tile.id]"
+            routerLinkActive="active"
+          >
+            {{ tile.id }} {{ tile.name }}
+          </a>
+        }
       </div>
     </div>
     <div class="col-9">
