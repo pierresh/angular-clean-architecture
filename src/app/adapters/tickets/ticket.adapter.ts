@@ -23,19 +23,22 @@ import { TicketPorts } from '../../domain/tickets/ticket.port';
 export class TicketAdapter implements TicketPorts {
   constructor(private http: HttpClient) {}
 
-  browse(options?: any): Observable<JsonBrowse> {
+  browse(options: object): Observable<JsonBrowse<TicketTile>> {
     const params = new URLSearchParams();
-    for (const key in options) {
-      if (options.hasOwnProperty(key)) {
-        params.set(key, options[key]);
-      }
-    }
 
-    return this.http.get<JsonBrowse>('api/v1/tickets?' + params.toString());
+    Object.entries(options).forEach(([key, value]) => {
+      if (value !== '' && value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+
+    return this.http.get<JsonBrowse<TicketTile>>(
+      'api/v1/tickets?' + params.toString(),
+    );
   }
 
-  read(id: Ticket['id']): Observable<JsonRead> {
-    return this.http.get<JsonRead>('api/v1/tickets/' + id);
+  read(id: Ticket['id']): Observable<JsonRead<Ticket>> {
+    return this.http.get<JsonRead<Ticket>>('api/v1/tickets/' + id);
   }
 
   add(item: Ticket): Observable<JsonAdd> {

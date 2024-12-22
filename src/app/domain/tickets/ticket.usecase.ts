@@ -1,7 +1,7 @@
-import { Observable, of, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { TicketState } from './ticket.state';
-import { Ticket, TicketTile } from './ticket.model';
+import { Ticket } from './ticket.model';
 
 export class TicketUsecase {
   constructor(private state: TicketState) {}

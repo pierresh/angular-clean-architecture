@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
-import { TicketStore } from '../../domain/tickets/ticket.store';
+import { TicketStore, Ticket } from '../../domain/tickets/ticket.store';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -29,11 +29,11 @@ export class TicketsComponent implements OnInit {
 
   ngOnInit(): void {
     // Load the tiles
-    this.usecase.browseItems().then((r) => {
+    this.usecase.browseItems().then(() => {
       // If the route id is empty, we set it as the first item in tiles
       const route_id = this.route.snapshot.paramMap.get('id');
       if (route_id === null || route_id === '.') {
-        this.router.navigate(['/tickets', this.store.tiles[0].id]);
+        this.navigate(this.store.tiles[0].id);
       }
 
       // Listen the change of the route to load the related ticket
@@ -59,7 +59,7 @@ export class TicketsComponent implements OnInit {
   saveItem(): void {
     this.usecase.saveItem().then((r) => {
       if (r.result === 'added') {
-        this.router.navigate(['/tickets', r.id]);
+        this.navigate(r.id);
       }
     });
   }
@@ -69,8 +69,12 @@ export class TicketsComponent implements OnInit {
       if (r.next_id === 0) {
         this.usecase.newItem();
       } else {
-        this.router.navigate(['/tickets', r.next_id]);
+        this.navigate(r.next_id);
       }
     });
+  }
+
+  private navigate(id: Ticket['id']): void {
+    this.router.navigate(['/tickets', id]);
   }
 }

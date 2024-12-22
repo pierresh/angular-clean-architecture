@@ -1,14 +1,11 @@
 import { Observable } from 'rxjs';
 
+import { JsonBrowse } from '../../adapters/response.model';
+
 import { Ticket, TicketTile } from './ticket.model';
 
 export interface TicketPorts<> {
-  browse(options?: any): Observable<{
-    data: {
-      pageIndex: number;
-      items: TicketTile[];
-    };
-  }>;
+  browse(options?: object): Observable<JsonBrowse<TicketTile>>;
 
   read(id: Ticket['id']): Observable<{
     data: {

@@ -1,7 +1,7 @@
 import { Observable, finalize, switchMap, of, firstValueFrom } from 'rxjs';
 
 import { TicketPorts } from './ticket.port';
-import { TicketStore, Ticket, TicketTile } from './ticket.store';
+import { TicketStore, Ticket } from './ticket.store';
 
 export class TicketState {
   constructor(
@@ -41,8 +41,8 @@ export class TicketState {
     if (this.store.item.id === null) {
       return firstValueFrom(
         this.add().pipe(
-          switchMap((r) => {
-            const result: 'added' = 'added';
+          switchMap(() => {
+            const result = 'added' as const;
 
             return of({ result, id: this.store.item.id });
           }),
@@ -51,8 +51,8 @@ export class TicketState {
     } else {
       return firstValueFrom(
         this.update().pipe(
-          switchMap((r) => {
-            const result: 'updated' = 'updated';
+          switchMap(() => {
+            const result = 'updated' as const;
 
             return of({ result, id: this.store.item.id });
           }),
@@ -61,7 +61,7 @@ export class TicketState {
     }
   }
 
-  add(): Observable<any> {
+  add(): Observable<undefined> {
     this.store.saving = true;
 
     return this.adapter.add(this.store.item).pipe(
@@ -72,22 +72,22 @@ export class TicketState {
         this.store.item.id = r.data.id;
         this.addTile();
 
-        return of(r);
+        return of(undefined);
       }),
     );
   }
 
-  update(): Observable<any> {
+  update(): Observable<undefined> {
     this.store.saving = true;
 
     return this.adapter.update(this.store.item).pipe(
       finalize(() => {
         this.store.saving = false;
       }),
-      switchMap((r) => {
+      switchMap(() => {
         this.updateTile();
 
-        return of(r);
+        return of(undefined);
       }),
     );
   }
@@ -101,7 +101,7 @@ export class TicketState {
       finalize(() => {
         this.store.deleting = false;
       }),
-      switchMap((r) => {
+      switchMap(() => {
         this.deleteTile();
 
         return of({ next_id });
@@ -110,7 +110,7 @@ export class TicketState {
   }
 
   /** Determine which ticket should be displayed after we delete the current one */
-  nextTile(): Ticket['id'] {
+  private nextTile(): Ticket['id'] {
     const itemIndex = this.store.tiles.findIndex(
       (item) => item.id === this.store.item.id,
     );
@@ -129,7 +129,7 @@ export class TicketState {
   }
 
   /** Add a new entry in the list of tickets, ie. when a ticket is created */
-  addTile(): void {
+  private addTile(): void {
     this.store.tiles.push({
       id: Number(this.store.item.id),
       name: this.store.item.name,
@@ -137,7 +137,7 @@ export class TicketState {
   }
 
   /** Update the entry in the list of tickets, ie. when a ticket is updated */
-  updateTile(): void {
+  private updateTile(): void {
     const itemIndex = this.store.tiles.findIndex(
       (item) => item.id === this.store.item.id,
     );
@@ -148,7 +148,7 @@ export class TicketState {
   }
 
   /** Remove the tile of the deleted ticket */
-  deleteTile(): void {
+  private deleteTile(): void {
     this.store.tiles = this.store.tiles.filter(
       (i) => i.id !== this.store.item.id,
     );

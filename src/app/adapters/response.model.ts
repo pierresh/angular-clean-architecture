@@ -1,13 +1,13 @@
-export interface JsonBrowse {
+export interface JsonBrowse<T = unknown> {
   data: {
     pageIndex: number;
-    items: any;
+    items: T[];
   };
 }
 
-export interface JsonRead {
+export interface JsonRead<T = unknown> {
   data: {
-    item: any;
+    item: T;
   };
 }
 

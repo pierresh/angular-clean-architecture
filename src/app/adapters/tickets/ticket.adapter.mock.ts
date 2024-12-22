@@ -20,8 +20,6 @@ import { TicketPorts } from '../../domain/tickets/ticket.port';
   providedIn: 'root',
 })
 export class TicketAdapterMock implements TicketPorts {
-  constructor() {}
-
   fakeTickets: TicketTile[] = [
     { id: 1, name: 'First ticket' },
     { id: 2, name: 'Second ticket' },
@@ -29,7 +27,8 @@ export class TicketAdapterMock implements TicketPorts {
 
   fakeId = 2;
 
-  browse(options?: any): Observable<JsonBrowse> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  browse(options?: object): Observable<JsonBrowse<TicketTile>> {
     const copies = Object.assign([], this.fakeTickets); // Prevent data binding
     return of({
       data: {
@@ -39,7 +38,7 @@ export class TicketAdapterMock implements TicketPorts {
     });
   }
 
-  read(id: Ticket['id']): Observable<JsonRead> {
+  read(id: Ticket['id']): Observable<JsonRead<Ticket>> {
     const item = this.fakeTickets.find((i) => i.id === id);
     const copy = Object.assign({}, item); // Prevent data binding
 
@@ -56,10 +55,12 @@ export class TicketAdapterMock implements TicketPorts {
     return of({ data: { id: this.fakeId } });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(item: Ticket): Observable<JsonUpdate> {
     return of({ data: { rowCount: 1 } });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   delete(id: Ticket['id']): Observable<JsonDelete> {
     return of({ data: { rowCount: 1 } });
   }
