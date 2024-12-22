@@ -12,6 +12,7 @@ import { TicketStore, Ticket } from '../../domain/tickets/ticket.store';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
   selector: 'app-ticket',
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
@@ -33,7 +34,7 @@ export class TicketsComponent implements OnInit {
       // If the route id is empty, we set it as the first item in tiles
       const route_id = this.route.snapshot.paramMap.get('id');
       if (route_id === null || route_id === '.') {
-        this.navigate(this.store.tiles[0].id);
+        this.navigate(this.store.tiles()[0].id);
       }
 
       // Listen the change of the route to load the related ticket

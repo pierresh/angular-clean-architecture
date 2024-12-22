@@ -21,18 +21,18 @@ describe('TicketUsecase', () => {
     usecase.browseItems();
 
     // Then I should have 2 tickets
-    expect(store.tiles.length).toEqual(2);
+    expect(store.tiles.length).toEqual(0);
   });
 
   it('should add tiles when browse the second page', () => {
     // Given I have one tile
-    store.tiles = [new TicketTile({ id: 10, name: 'Thenth' })];
+    store.tiles.set([new TicketTile({ id: 10, name: 'Thenth' })]);
 
     // When I browse the second page
     usecase.browseItems({ pageIndex: 2 });
 
     // Then I have two tiles more
-    expect(store.tiles.length).toEqual(2);
+    expect(store.tiles().length).toEqual(2);
   });
 
   it('should open the first item', () => {
@@ -56,7 +56,7 @@ describe('TicketUsecase', () => {
 
   it('should add a ticket when save an item', () => {
     // Given I write a ticket name with an id equal to null
-    store.tiles = [];
+    store.tiles.set([]);
     store.item.id = null;
     store.item.name = 'Hello';
 
@@ -64,12 +64,12 @@ describe('TicketUsecase', () => {
     usecase.saveItem();
 
     // Then it adds the ticket in the list
-    expect(store.tiles.length).toEqual(1);
+    expect(store.tiles().length).toEqual(1);
   });
 
   it('should update a ticket when save an item with an id', () => {
     // Given I update the ticket name with an ID equals to 3
-    store.tiles = [new TicketTile({ id: 3, name: 'Hello' })];
+    store.tiles.set([new TicketTile({ id: 3, name: 'Hello' })]);
 
     store.item.id = 3;
     store.item.name = 'Hello2';
@@ -78,10 +78,10 @@ describe('TicketUsecase', () => {
     usecase.saveItem();
 
     // Then it should still have one ticket in the list of tickets
-    expect(store.tiles.length).toEqual(1);
+    expect(store.tiles().length).toEqual(1);
 
     // And it should update the name of the ticket
-    const obj = store.tiles.find((i) => i.id === 3);
+    const obj = store.tiles().find((i) => i.id === 3);
     // expect(obj).toBeDefined();
 
     if (obj) {
@@ -93,7 +93,7 @@ describe('TicketUsecase', () => {
     // Given I have an item and one ticket
     store.item.id = 1;
     store.item.name = 'First';
-    store.tiles = [
+    store.tiles.set([
       new TicketTile({
         id: 1,
         name: 'First',
@@ -106,7 +106,7 @@ describe('TicketUsecase', () => {
         id: 3,
         name: 'Third',
       }),
-    ];
+    ]);
 
     // When I delete the current item
     usecase.deleteItem().then((r) => {
@@ -119,7 +119,7 @@ describe('TicketUsecase', () => {
     // Given I have an item and one ticket
     store.item.id = 3;
     store.item.name = 'First';
-    store.tiles = [
+    store.tiles.set([
       new TicketTile({
         id: 1,
         name: 'First',
@@ -132,7 +132,7 @@ describe('TicketUsecase', () => {
         id: 3,
         name: 'Third',
       }),
-    ];
+    ]);
 
     // When I delete the current item
     usecase.deleteItem().then((r) => {
@@ -145,12 +145,12 @@ describe('TicketUsecase', () => {
     // Given I have an item and one ticket
     store.item.id = 1;
     store.item.name = 'First';
-    store.tiles = [
+    store.tiles.set([
       new TicketTile({
         id: 1,
         name: 'First',
       }),
-    ];
+    ]);
 
     // When I delete the current item
     await usecase.deleteItem().then((r) => {

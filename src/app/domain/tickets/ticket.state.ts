@@ -13,9 +13,10 @@ export class TicketState {
     return this.adapter.browse(options).pipe(
       switchMap((r) => {
         if (r.data.pageIndex === 1) {
-          this.store.tiles = r.data.items;
+          this.store.tiles.set(r.data.items);
         } else {
-          this.store.tiles = this.store.tiles.concat(r.data.items);
+          // concatenate to the existing ones
+          this.store.tiles.set([...this.store.tiles(), ...r.data.items]);
         }
 
         return of({ result: true });
@@ -62,11 +63,11 @@ export class TicketState {
   }
 
   add(): Observable<undefined> {
-    this.store.saving = true;
+    this.store.saving.set(true);
 
     return this.adapter.add(this.store.item).pipe(
       finalize(() => {
-        this.store.saving = false;
+        this.store.saving.set(false);
       }),
       switchMap((r) => {
         this.store.item.id = r.data.id;
@@ -78,11 +79,11 @@ export class TicketState {
   }
 
   update(): Observable<undefined> {
-    this.store.saving = true;
+    this.store.saving.set(true);
 
     return this.adapter.update(this.store.item).pipe(
       finalize(() => {
-        this.store.saving = false;
+        this.store.saving.set(false);
       }),
       switchMap(() => {
         this.updateTile();
@@ -95,11 +96,11 @@ export class TicketState {
   delete(): Observable<{ next_id: Ticket['id'] }> {
     const next_id = this.nextTile();
 
-    this.store.deleting = true;
+    this.store.deleting.set(true);
 
     return this.adapter.delete(this.store.item.id).pipe(
       finalize(() => {
-        this.store.deleting = false;
+        this.store.deleting.set(false);
       }),
       switchMap(() => {
         this.deleteTile();
@@ -111,26 +112,26 @@ export class TicketState {
 
   /** Determine which ticket should be displayed after we delete the current one */
   private nextTile(): Ticket['id'] {
-    const itemIndex = this.store.tiles.findIndex(
-      (item) => item.id === this.store.item.id,
-    );
+    const itemIndex = this.store
+      .tiles()
+      .findIndex((item) => item.id === this.store.item.id);
 
     // If the item is the last one, we should use the previous one
-    if (itemIndex + 1 === this.store.tiles.length) {
-      if (this.store.tiles[itemIndex - 1] !== undefined) {
-        return this.store.tiles[itemIndex - 1].id;
+    if (itemIndex + 1 === this.store.tiles().length) {
+      if (this.store.tiles()[itemIndex - 1] !== undefined) {
+        return this.store.tiles()[itemIndex - 1].id;
       }
 
       return 0;
     }
 
     // Otheriwse returns the following one
-    return this.store.tiles[itemIndex + 1].id;
+    return this.store.tiles()[itemIndex + 1].id;
   }
 
   /** Add a new entry in the list of tickets, ie. when a ticket is created */
   private addTile(): void {
-    this.store.tiles.push({
+    this.store.tiles().push({
       id: Number(this.store.item.id),
       name: this.store.item.name,
     });
@@ -138,19 +139,19 @@ export class TicketState {
 
   /** Update the entry in the list of tickets, ie. when a ticket is updated */
   private updateTile(): void {
-    const itemIndex = this.store.tiles.findIndex(
-      (item) => item.id === this.store.item.id,
-    );
+    const itemIndex = this.store
+      .tiles()
+      .findIndex((item) => item.id === this.store.item.id);
 
     if (itemIndex !== -1) {
-      this.store.tiles[itemIndex].name = this.store.item.name;
+      this.store.tiles()[itemIndex].name = this.store.item.name;
     }
   }
 
   /** Remove the tile of the deleted ticket */
   private deleteTile(): void {
-    this.store.tiles = this.store.tiles.filter(
-      (i) => i.id !== this.store.item.id,
+    this.store.tiles.set(
+      this.store.tiles().filter((i) => i.id !== this.store.item.id),
     );
   }
 }

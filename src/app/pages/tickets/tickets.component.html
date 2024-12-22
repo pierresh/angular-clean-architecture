@@ -3,7 +3,7 @@
     <div class="col-3">
       <h3>List of tickets</h3>
       <div class="list-group" data-cy="tiles">
-        @for (tile of store.tiles; track tile) {
+        @for (tile of store.tiles(); track tile) {
           <a
             class="list-group-item"
             [routerLink]="['/tickets', tile.id]"
@@ -49,7 +49,7 @@
           class="btn btn-primary"
           (click)="saveItem()"
           data-cy="button-save"
-          [disabled]="store.saving"
+          [disabled]="store.saving()"
         >
           Save
         </button>
@@ -58,7 +58,7 @@
           class="btn btn-danger"
           (click)="deleteItem()"
           data-cy="button-delete"
-          [disabled]="store.deleting || store.item.id === null"
+          [disabled]="store.deleting() || store.item.id === null"
         >
           Delete
         </button>

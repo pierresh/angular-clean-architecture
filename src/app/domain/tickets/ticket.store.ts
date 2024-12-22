@@ -1,12 +1,13 @@
+import { signal } from '@angular/core';
 import { Ticket, TicketTile } from './ticket.model';
 
 export { Ticket, TicketTile } from './ticket.model';
 
 export class TicketStore {
   item = new Ticket();
-  tiles: TicketTile[] = [];
+  tiles = signal<TicketTile[]>([]);
 
   // States for buttons
-  saving = false;
-  deleting = false;
+  saving = signal(false);
+  deleting = signal(false);
 }
