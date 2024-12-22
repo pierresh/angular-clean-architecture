@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   Router,
   ActivatedRoute,
@@ -7,9 +8,14 @@ import {
   RouterLink,
 } from '@angular/router';
 
+import { environment } from 'src/environments/environment';
+
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 import { TicketStore, Ticket } from '../../domain/tickets/ticket.store';
-import { FormsModule } from '@angular/forms';
+
+import { TicketState } from 'src/app/domain/tickets/ticket.state';
+import { TicketAdapter } from 'src/app/adapters/tickets/ticket.adapter';
+import { TicketAdapterMock } from 'src/app/adapters/tickets/ticket.adapter.mock';
 
 @Component({
   standalone: true,
@@ -17,6 +23,32 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.scss'],
   imports: [RouterLinkActive, RouterLink, FormsModule],
+  providers: [
+    {
+      provide: TicketStore,
+      useFactory: () => new TicketStore(),
+    },
+    {
+      provide: TicketState,
+      deps: [TicketAdapter, TicketAdapterMock, TicketStore],
+      useFactory: (
+        adapter: TicketAdapter,
+        adapterMock: TicketAdapterMock,
+        store: TicketStore,
+      ): TicketState => {
+        if (environment.api_source === 'rest') {
+          return new TicketState(adapter, store);
+        } else {
+          return new TicketState(adapterMock, store);
+        }
+      },
+    },
+    {
+      provide: TicketUsecase,
+      deps: [TicketState],
+      useFactory: (state: TicketState) => new TicketUsecase(state),
+    },
+  ],
 })
 export class TicketsComponent implements OnInit {
   @ViewChild('ticket_name') ticket_name!: ElementRef;

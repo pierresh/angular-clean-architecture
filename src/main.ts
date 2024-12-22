@@ -1,5 +1,8 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {
+  enableProdMode,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 
 import { environment } from './environments/environment';
 import {
@@ -8,7 +11,9 @@ import {
 } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app/app-routing.module';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
 if (environment.production) {
@@ -17,7 +22,9 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, FormsModule, AppRoutingModule),
+    importProvidersFrom(BrowserModule, FormsModule),
     provideHttpClient(withInterceptorsFromDi()),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
   ],
 }).catch((err) => console.error(err));
