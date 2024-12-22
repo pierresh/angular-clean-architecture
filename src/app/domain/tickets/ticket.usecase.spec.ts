@@ -1,40 +1,20 @@
-import { of } from 'rxjs';
-
-import { TicketUsecase } from './ticket.usecase';
-import { TicketState } from './ticket.state';
-import { TicketStore } from './ticket.store';
-import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
-
-// If there is no .adapter.mock available, it is possible to mock as follow
-// I keep the 2 way to mock the adapter for record
-const adapterMock = {
-  browse: () =>
-    of({
-      data: {
-        pageIndex: 1,
-        items: [
-          { id: 1, name: 'First ticket' },
-          { id: 2, name: 'Second ticket' },
-        ],
-      },
-    }),
-  read: () =>
-    of({
-      data: {
-        item: { id: 1, name: 'First ticket' },
-      },
-    }),
-  add: () => of({ data: { id: 3 } }),
-  update: () => of({ data: { rowCount: 1 } }),
-  delete: () => of({ data: { rowCount: 1 } }),
-};
+import { TicketUsecase as Usecase } from './ticket.usecase';
+import { TicketState as State } from './ticket.state';
+import { TicketStore as Store, TicketTile } from './ticket.store';
+import { TicketAdapterMock as Adapter } from '../../adapters/tickets/ticket.adapter.mock';
 
 describe('TicketUsecase', () => {
-  // const adapterMock = adapterMock;
-  const adapterMock = new TicketAdapterMock();
-  const store = new TicketStore();
-  const state = new TicketState(adapterMock, store);
-  const usecase = new TicketUsecase(state);
+  let adapter: Adapter;
+  let store: Store;
+  let state: State;
+  let usecase: Usecase;
+
+  beforeEach(() => {
+    adapter = new Adapter();
+    store = new Store();
+    state = new State(adapter, store);
+    usecase = new Usecase(state);
+  });
 
   it('should browseItems', () => {
     // When I browse ths list of tickets
@@ -46,7 +26,7 @@ describe('TicketUsecase', () => {
 
   it('should add tiles when browse the second page', () => {
     // Given I have one tile
-    store.tiles = [{ id: 10, name: 'Thenth' }];
+    store.tiles = [new TicketTile({ id: 10, name: 'Thenth' })];
 
     // When I browse the second page
     usecase.browseItems({ pageIndex: 2 });
@@ -76,6 +56,7 @@ describe('TicketUsecase', () => {
 
   it('should add a ticket when save an item', () => {
     // Given I write a ticket name with an id equal to null
+    store.tiles = [];
     store.item.id = null;
     store.item.name = 'Hello';
 
@@ -83,11 +64,13 @@ describe('TicketUsecase', () => {
     usecase.saveItem();
 
     // Then it adds the ticket in the list
-    expect(store.tiles.length).toEqual(3);
+    expect(store.tiles.length).toEqual(1);
   });
 
   it('should update a ticket when save an item with an id', () => {
     // Given I update the ticket name with an ID equals to 3
+    store.tiles = [new TicketTile({ id: 3, name: 'Hello' })];
+
     store.item.id = 3;
     store.item.name = 'Hello2';
 
@@ -95,7 +78,7 @@ describe('TicketUsecase', () => {
     usecase.saveItem();
 
     // Then it should still have one ticket in the list of tickets
-    expect(store.tiles.length).toEqual(3);
+    expect(store.tiles.length).toEqual(1);
 
     // And it should update the name of the ticket
     const obj = store.tiles.find((i) => i.id === 3);
@@ -111,18 +94,18 @@ describe('TicketUsecase', () => {
     store.item.id = 1;
     store.item.name = 'First';
     store.tiles = [
-      {
+      new TicketTile({
         id: 1,
         name: 'First',
-      },
-      {
+      }),
+      new TicketTile({
         id: 2,
         name: 'Second',
-      },
-      {
+      }),
+      new TicketTile({
         id: 3,
         name: 'Third',
-      },
+      }),
     ];
 
     // When I delete the current item
@@ -137,18 +120,18 @@ describe('TicketUsecase', () => {
     store.item.id = 3;
     store.item.name = 'First';
     store.tiles = [
-      {
+      new TicketTile({
         id: 1,
         name: 'First',
-      },
-      {
+      }),
+      new TicketTile({
         id: 2,
         name: 'Second',
-      },
-      {
+      }),
+      new TicketTile({
         id: 3,
         name: 'Third',
-      },
+      }),
     ];
 
     // When I delete the current item
@@ -163,10 +146,10 @@ describe('TicketUsecase', () => {
     store.item.id = 1;
     store.item.name = 'First';
     store.tiles = [
-      {
+      new TicketTile({
         id: 1,
         name: 'First',
-      },
+      }),
     ];
 
     // When I delete the current item

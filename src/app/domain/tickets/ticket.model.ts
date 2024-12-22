@@ -1,6 +1,11 @@
-export interface TicketTile {
-  id: number;
-  name: string;
+export class TicketTile {
+  id: Ticket['id'];
+  name: Ticket['name'];
+
+  constructor(o?: any) {
+    this.id = o?.id || null;
+    this.name = o?.name || '';
+  }
 }
 
 export class Ticket {
@@ -8,7 +13,7 @@ export class Ticket {
   name: string;
 
   constructor(o?: any) {
-    this.id = (o && o.id) || null;
-    this.name = (o && o.name) || '';
+    this.id = o?.id || null;
+    this.name = o?.name || '';
   }
 }
