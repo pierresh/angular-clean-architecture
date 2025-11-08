@@ -1,4 +1,4 @@
-import { Spectator, createComponentFactory, byText } from '@ngneat/spectator';
+import { Spectator, createRoutingFactory } from '@ngneat/spectator';
 
 import { FormsModule } from '@angular/forms';
 
@@ -11,10 +11,12 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 describe('TicketComponent', () => {
   let spectator: Spectator<TicketsComponent>;
 
-  const createComponent = createComponentFactory({
+  const createComponent = createRoutingFactory({
     detectChanges: false,
     component: TicketsComponent,
     imports: [FormsModule],
+    stubsEnabled: false,
+    routes: [{ path: 'tickets/:id', component: TicketsComponent }],
     providers: [
       {
         provide: TicketStore,
@@ -32,6 +34,9 @@ describe('TicketComponent', () => {
         useFactory: (state: TicketState) => new TicketUsecase(state),
       },
     ],
+    params: {
+      id: null,
+    },
   });
 
   beforeEach(() => (spectator = createComponent()));

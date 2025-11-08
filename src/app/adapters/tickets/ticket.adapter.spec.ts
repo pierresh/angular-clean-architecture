@@ -14,7 +14,7 @@ describe('HttpClient testing for TicketAdapter', () => {
 
   it('can test HttpClient.get', () => {
     // When I browse tickets without parameters
-    spectator.service.browse().subscribe();
+    spectator.service.browse({}).subscribe();
 
     // Then it should call the API GET api/v1/tickets?
     spectator.expectOne('api/v1/tickets?', HttpMethod.GET);

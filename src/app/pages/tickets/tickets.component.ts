@@ -8,14 +8,14 @@ import {
   RouterLink,
 } from '@angular/router';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 import { TicketStore, Ticket } from '../../domain/tickets/ticket.store';
 
-import { TicketState } from 'src/app/domain/tickets/ticket.state';
-import { TicketAdapter } from 'src/app/adapters/tickets/ticket.adapter';
-import { TicketAdapterMock } from 'src/app/adapters/tickets/ticket.adapter.mock';
+import { TicketState } from '../../domain/tickets/ticket.state';
+import { TicketAdapter } from '../../adapters/tickets/ticket.adapter';
+import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
 
 @Component({
   standalone: true,
