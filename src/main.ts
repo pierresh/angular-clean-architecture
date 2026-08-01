@@ -8,6 +8,7 @@ import { environment } from './environments/environment';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr,
 } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +24,7 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(BrowserModule, FormsModule),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
   ],
