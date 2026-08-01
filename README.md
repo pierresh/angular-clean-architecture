@@ -26,9 +26,9 @@ If you have any suggestions to improve this skeleton, feel free to open an [Issu
 - the component interacts only with the use case class
 - for the sake of simplicity, the use case class gathers the different use cases for that topic
 - unit tests are performed only through the use cases (as they will use the necessary files to perform the required actions, so it is enough to assert their behavior)
-- secondary adapters are in [src/app/adapters](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app/adapters/tickets)
+- gateways (the humble objects wrapping data access, e.g. HttpClient) are in [src/app/gateways](https://github.com/pierresh/angular-clean-architecture/tree/main/src/app/gateways/tickets)
 - integration tests are performed on the component and the HTTP service
-- 2 secondary adapters are provided, the original one using HttpClient, and an in-memory one for mock (used by default, it can be changed in *src/environments/environment.ts*)
+- 2 gateways are provided, the original one using HttpClient, and an in-memory one for mock (used by default, it can be changed in *src/environments/environment.ts*)
 
 ## Development server
 Run `npm i` to install dependencies.

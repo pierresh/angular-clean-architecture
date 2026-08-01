@@ -3,7 +3,7 @@ import { Spectator, createRoutingFactory } from '@ngneat/spectator';
 import { FormsModule } from '@angular/forms';
 
 import { TicketsComponent } from './tickets.component';
-import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
+import { TicketGatewayMock } from '../../gateways/tickets/ticket.gateway.mock';
 import { TicketState } from '../../domain/tickets/ticket.state';
 import { TicketStore } from '../../domain/tickets/ticket.store';
 import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
@@ -24,9 +24,9 @@ describe('TicketComponent', () => {
       },
       {
         provide: TicketState,
-        deps: [TicketAdapterMock, TicketStore],
-        useFactory: (adapter: TicketAdapterMock, store: TicketStore) =>
-          new TicketState(adapter, store),
+        deps: [TicketGatewayMock, TicketStore],
+        useFactory: (gateway: TicketGatewayMock, store: TicketStore) =>
+          new TicketState(gateway, store),
       },
       {
         provide: TicketUsecase,

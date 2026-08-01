@@ -1,18 +1,18 @@
 import { TicketUsecase as Usecase } from './ticket.usecase';
 import { TicketState as State } from './ticket.state';
 import { TicketStore as Store, TicketTile } from './ticket.store';
-import { TicketAdapterMock as Adapter } from '../../adapters/tickets/ticket.adapter.mock';
+import { TicketGatewayMock as Gateway } from '../../gateways/tickets/ticket.gateway.mock';
 
 describe('TicketUsecase', () => {
-  let adapter: Adapter;
+  let gateway: Gateway;
   let store: Store;
   let state: State;
   let usecase: Usecase;
 
   beforeEach(() => {
-    adapter = new Adapter();
+    gateway = new Gateway();
     store = new Store();
-    state = new State(adapter, store);
+    state = new State(gateway, store);
     usecase = new Usecase(state);
   });
 

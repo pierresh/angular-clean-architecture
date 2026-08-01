@@ -4,11 +4,11 @@ import {
   HttpMethod,
 } from '@ngneat/spectator';
 
-import { TicketAdapter } from './ticket.adapter';
+import { TicketGateway } from './ticket.gateway';
 
-describe('HttpClient testing for TicketAdapter', () => {
-  let spectator: SpectatorHttp<TicketAdapter>;
-  const createHttp = createHttpFactory(TicketAdapter);
+describe('HttpClient testing for TicketGateway', () => {
+  let spectator: SpectatorHttp<TicketGateway>;
+  const createHttp = createHttpFactory(TicketGateway);
 
   beforeEach(() => (spectator = createHttp()));
 

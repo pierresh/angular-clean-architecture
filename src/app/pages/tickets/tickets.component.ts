@@ -14,8 +14,8 @@ import { TicketUsecase } from '../../domain/tickets/ticket.usecase';
 import { TicketStore, Ticket } from '../../domain/tickets/ticket.store';
 
 import { TicketState } from '../../domain/tickets/ticket.state';
-import { TicketAdapter } from '../../adapters/tickets/ticket.adapter';
-import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
+import { TicketGateway } from '../../gateways/tickets/ticket.gateway';
+import { TicketGatewayMock } from '../../gateways/tickets/ticket.gateway.mock';
 
 @Component({
   standalone: true,
@@ -30,16 +30,16 @@ import { TicketAdapterMock } from '../../adapters/tickets/ticket.adapter.mock';
     },
     {
       provide: TicketState,
-      deps: [TicketAdapter, TicketAdapterMock, TicketStore],
+      deps: [TicketGateway, TicketGatewayMock, TicketStore],
       useFactory: (
-        adapter: TicketAdapter,
-        adapterMock: TicketAdapterMock,
+        gateway: TicketGateway,
+        gatewayMock: TicketGatewayMock,
         store: TicketStore,
       ): TicketState => {
         if (environment.api_source === 'rest') {
-          return new TicketState(adapter, store);
+          return new TicketState(gateway, store);
         } else {
-          return new TicketState(adapterMock, store);
+          return new TicketState(gatewayMock, store);
         }
       },
     },

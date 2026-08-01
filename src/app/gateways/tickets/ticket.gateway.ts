@@ -20,7 +20,7 @@ import { TicketPorts } from '../../domain/tickets/ticket.port';
 @Injectable({
   providedIn: 'root',
 })
-export class TicketAdapter implements TicketPorts {
+export class TicketGateway implements TicketPorts {
   constructor(private http: HttpClient) {}
 
   browse(options: object): Observable<JsonBrowse<TicketTile>> {

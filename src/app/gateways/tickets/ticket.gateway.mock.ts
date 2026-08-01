@@ -19,7 +19,7 @@ import { TicketPorts } from '../../domain/tickets/ticket.port';
 @Injectable({
   providedIn: 'root',
 })
-export class TicketAdapterMock implements TicketPorts {
+export class TicketGatewayMock implements TicketPorts {
   fakeTickets: TicketTile[] = [
     { id: 1, name: 'First ticket' },
     { id: 2, name: 'Second ticket' },

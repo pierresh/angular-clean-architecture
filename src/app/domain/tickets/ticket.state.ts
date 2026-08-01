@@ -5,12 +5,12 @@ import { TicketStore, Ticket } from './ticket.store';
 
 export class TicketState {
   constructor(
-    private adapter: TicketPorts,
+    private gateway: TicketPorts,
     private store: TicketStore,
   ) {}
 
   browse(options?: object): Observable<{ result: boolean }> {
-    return this.adapter.browse(options).pipe(
+    return this.gateway.browse(options).pipe(
       switchMap((r) => {
         if (r.data.pageIndex === 1) {
           this.store.tiles.set(r.data.items);
@@ -25,7 +25,7 @@ export class TicketState {
   }
 
   read(id: Ticket['id']): Observable<{ result: boolean }> {
-    return this.adapter.read(id).pipe(
+    return this.gateway.read(id).pipe(
       switchMap((r) => {
         this.store.item = r.data.item;
 
@@ -65,7 +65,7 @@ export class TicketState {
   add(): Observable<undefined> {
     this.store.saving.set(true);
 
-    return this.adapter.add(this.store.item).pipe(
+    return this.gateway.add(this.store.item).pipe(
       finalize(() => {
         this.store.saving.set(false);
       }),
@@ -81,7 +81,7 @@ export class TicketState {
   update(): Observable<undefined> {
     this.store.saving.set(true);
 
-    return this.adapter.update(this.store.item).pipe(
+    return this.gateway.update(this.store.item).pipe(
       finalize(() => {
         this.store.saving.set(false);
       }),
@@ -98,7 +98,7 @@ export class TicketState {
 
     this.store.deleting.set(true);
 
-    return this.adapter.delete(this.store.item.id).pipe(
+    return this.gateway.delete(this.store.item.id).pipe(
       finalize(() => {
         this.store.deleting.set(false);
       }),
